@@ -1,6 +1,7 @@
 # Contributing to Keti OS
-Keti OS is an x86 operating system built from scratch.
-Built by Aadithya Vasudevan (Aadithya-19).
+Keti OS is open source and free to use. If you fork it, 
+a mention or link back to the original repo is appreciated 
+(though not legally required). Built by Aadithya Vasudevan (Aadithya-19).
 
 ## How to contribute
 - Fork the repo
