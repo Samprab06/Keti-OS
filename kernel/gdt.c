@@ -16,7 +16,7 @@ void gdt_init(){
     gdt_set_entry(0, 0, 0, 0, 0);
     gdt_set_entry(1, 0x0, 0xFFFFF, 0x9A, 0xC); //cs
     gdt_set_entry(2, 0x0, 0xFFFFF, 0x92, 0xC); //ds
-    gdt_desc.size = (sizeof(struct gdt_entry) * 3) - 1; //
+    gdt_desc.size = (sizeof(struct gdt_entry) * 3) - 1;
     gdt_desc.address = (unsigned int)&gdt;
     gdt_load();
 }

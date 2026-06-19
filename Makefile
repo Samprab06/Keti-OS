@@ -12,6 +12,12 @@ boot/loader.o: boot/loader.asm
 boot/gdt_load.o: boot/gdt_load.asm
 	$(ASM) -f elf32 boot/gdt_load.asm -o boot/gdt_load.o
 
+boot/idt_load.o: boot/idt_load.asm
+	$(ASM) -f elf32 boot/idt_load.asm -o boot/idt_load.o
+
+boot/isr.o: boot/isr.asm
+	$(ASM) -f elf32 boot/isr.asm -o boot/isr.o
+
 # Compile the C kernel
 kernel/kernel.o: kernel/kernel.c
 	$(CC) -m32 -ffreestanding -c kernel/kernel.c -o kernel/kernel.o
@@ -22,10 +28,19 @@ kernel/vga.o: kernel/vga.c
 kernel/gdt.o: kernel/gdt.c
 	$(CC) -m32 -ffreestanding -c kernel/gdt.c -o kernel/gdt.o
 
+kernel/idt.o: kernel/idt.c
+	$(CC) -m32 -ffreestanding -c kernel/idt.c -o kernel/idt.o
+
+kernel/keyboard.o: kernel/keyboard.c
+	$(CC) -m32 -ffreestanding -c kernel/keyboard.c -o kernel/keyboard.o
+
+kernel/ports.o: kernel/ports.c
+	$(CC) -m32 -ffreestanding -c kernel/ports.c -o kernel/ports.o
+
 # Link everything into a kernel ELF
-$(BUILD_DIR)/kernel.elf: boot/loader.o boot/gdt_load.o kernel/kernel.o kernel/vga.o kernel/gdt.o 
+$(BUILD_DIR)/kernel.elf: boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o
 	mkdir -p $(BUILD_DIR)
-	$(LD) -T link.ld -melf_i386 boot/loader.o boot/gdt_load.o kernel/kernel.o kernel/vga.o kernel/gdt.o -o $(BUILD_DIR)/kernel.elf
+	$(LD) -T link.ld -melf_i386 boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o -o $(BUILD_DIR)/kernel.elf
 
 # Build the bootable ISO
 $(BUILD_DIR)/keti.iso: $(BUILD_DIR)/kernel.elf
@@ -42,6 +57,6 @@ run: $(BUILD_DIR)/keti.iso
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f boot/loader.o kernel/kernel.o kernel/vga.o boot/gdt_load.o kernel/gdt.o
+	rm -f boot/loader.o kernel/kernel.o kernel/vga.o boot/gdt_load.o boot/isr.o boot/idt_load.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o
 
 .PHONY: all run clean

@@ -34,6 +34,38 @@ void print_vga(char *str){
     }
 }
 
+void print_char_vga(char c){
+    char *out = (char *)0xB8000;
+    if (c == '\n') {
+        cursor_col = 0;
+        cursor_row++;
+        return;
+    }
+    int index = (cursor_row*80 + cursor_col)*2;
+    out[index] = c;
+    out[index + 1] = 0x0F;
+    cursor_col++;
+    if (cursor_col==80){
+        cursor_col=0;
+        cursor_row++;
+    }
+}
+
+void delete_char_vga(){
+    if (cursor_col > 0) {
+        cursor_col--;
+    }
+    char *out = (char *)0xB8000;
+    int index = (cursor_row*80 + cursor_col)*2;
+    out[index] = ' ';
+    out[index + 1] = 0x0F;
+    if (cursor_col == 0) {
+        cursor_row--;
+        cursor_col = 79; //Now, being the smart person you are, you would have noticed that this will take you to the end of the line regardless of if you typed till the end of the line (so you are deleting nothing)
+        //fix? i dont know \(*.*)/
+        //ill come back to it
+    } // a quick thought since i cant just keep pressing the cursor for each row, when you reach beginning of the line, a delete will take you up.
+}
 
 //self explanatory, clears it
 void clear_vga(){
