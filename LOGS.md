@@ -37,3 +37,9 @@ Tiring session today, did a lot of GDT stuff and reading. Basically a lot of seg
 You can read this stuff in Chapter 5 in the book.
 
 Unfortunately, I am burnt out for the day and I can't see visual progress (which I can't wait for), so Im gonna study for my classes now...yipee :<
+
+Log 4 (06/19):
+
+Insane session today, first I configured the ports and now the keyboard successfully works. So user input works (or my input). Interrupts have also been configured and timer has also been added. A lot of work has been done and notice that phase 3 (or what Claude says is a phase) is complete. 
+
+Now I have to deal with memory management and stuff. I don't know why its being phrased as a boss battle. we will see.

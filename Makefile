@@ -37,10 +37,13 @@ kernel/keyboard.o: kernel/keyboard.c
 kernel/ports.o: kernel/ports.c
 	$(CC) -m32 -ffreestanding -c kernel/ports.c -o kernel/ports.o
 
+kernel/timer.o: kernel/timer.c
+	$(CC) -m32 -ffreestanding -c kernel/timer.c -o kernel/timer.o
+
 # Link everything into a kernel ELF
-$(BUILD_DIR)/kernel.elf: boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o
+$(BUILD_DIR)/kernel.elf: boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o
 	mkdir -p $(BUILD_DIR)
-	$(LD) -T link.ld -melf_i386 boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o -o $(BUILD_DIR)/kernel.elf
+	$(LD) -T link.ld -melf_i386 boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o -o $(BUILD_DIR)/kernel.elf
 
 # Build the bootable ISO
 $(BUILD_DIR)/keti.iso: $(BUILD_DIR)/kernel.elf
@@ -57,6 +60,6 @@ run: $(BUILD_DIR)/keti.iso
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f boot/loader.o kernel/kernel.o kernel/vga.o boot/gdt_load.o boot/isr.o boot/idt_load.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o
+	rm -f boot/loader.o kernel/kernel.o kernel/vga.o boot/gdt_load.o boot/isr.o boot/idt_load.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o
 
 .PHONY: all run clean

@@ -1,6 +1,7 @@
 #include "vga.h"
 #include "gdt.h"
 #include "idt.h"
+#include "timer.h"
 #include "keyboard.h"
 
 void kernel_main() {
@@ -9,6 +10,7 @@ void kernel_main() {
     keyboard_init();
     clear_vga();
     print_vga("Keti OS\nBy Aadithya Vasudevan\nVersion 1.0");
+    timer_init();
     __asm__ volatile ("sti");
     while(1) {}
 }
