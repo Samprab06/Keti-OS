@@ -1,5 +1,5 @@
 #include "idt.h"
-#include "ports.h"
+#include "drivers/ports.h"
 
 void pic_remap();
 void idt_load();
@@ -13,6 +13,7 @@ struct idt_descriptor idt_desc;
 #define PIC2_PORT_A 0xA0
 
 extern void isr_default();
+extern void fault_handle();
 
 void idt_fill(int i, unsigned int handler){
     idt[i].low_handler_addr = handler & 0xFFFF; //lower 16
@@ -26,7 +27,11 @@ void idt_init(){
     
     for (int i = 0; i < 256; i++) {
         idt_fill(i, (unsigned int)isr_default);
+        if (i == 14){
+        }
     }
+    idt_fill(14, (unsigned int)fault_handle);
+
     pic_remap();
     idt_desc.size = (sizeof(struct idt_entry) * 256) - 1; //
     idt_desc.address = (unsigned int)&idt;

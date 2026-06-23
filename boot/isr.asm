@@ -3,7 +3,8 @@ global keyboard_isr
 extern keyboard_handler
 global timer_isr
 extern timer_handler
-
+global fault_handle
+extern page_fault_handler
 
 section .text
 
@@ -13,6 +14,12 @@ keyboard_isr:
     popa
     iret 
 
+fault_handle:
+    pusha
+    call page_fault_handler
+    popa
+    add esp, 4
+    iret
 
 isr_default:
     iret

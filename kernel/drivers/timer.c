@@ -1,6 +1,6 @@
 #include "timer.h"
 #include "ports.h"
-#include "idt.h"
+#include "cpu/idt.h"
 
 extern void timer_isr();
 

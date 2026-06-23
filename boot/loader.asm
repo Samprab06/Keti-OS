@@ -13,6 +13,7 @@ section .text
 
 loader:
     mov esp, kernel_stack + STACK_SIZE ; set up stack for C
+    push ebx
     call kernel_main ; jump into C
 .loop:
     jmp .loop ; if C ever returns, hang

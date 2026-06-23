@@ -1,11 +1,12 @@
 ASM = nasm
 CC = i686-linux-gnu-gcc
+CFLAGS = -m32 -ffreestanding -Ikernel
 LD = ld
 BUILD_DIR = build
 
 all: run
 
-# Assemble the boot loader
+# Boot assembly
 boot/loader.o: boot/loader.asm
 	$(ASM) -f elf32 boot/loader.asm -o boot/loader.o
 
@@ -18,32 +19,53 @@ boot/idt_load.o: boot/idt_load.asm
 boot/isr.o: boot/isr.asm
 	$(ASM) -f elf32 boot/isr.asm -o boot/isr.o
 
-# Compile the C kernel
+boot/load_paging.o: boot/load_paging.asm
+	$(ASM) -f elf32 boot/load_paging.asm -o boot/load_paging.o
+
+# Kernel core
 kernel/kernel.o: kernel/kernel.c
-	$(CC) -m32 -ffreestanding -c kernel/kernel.c -o kernel/kernel.o
+	$(CC) $(CFLAGS) -c kernel/kernel.c -o kernel/kernel.o
 
-kernel/vga.o: kernel/vga.c
-	$(CC) -m32 -ffreestanding -c kernel/vga.c -o kernel/vga.o
-	
-kernel/gdt.o: kernel/gdt.c
-	$(CC) -m32 -ffreestanding -c kernel/gdt.c -o kernel/gdt.o
+# Display
+kernel/display/vga.o: kernel/display/vga.c
+	$(CC) $(CFLAGS) -c kernel/display/vga.c -o kernel/display/vga.o
 
-kernel/idt.o: kernel/idt.c
-	$(CC) -m32 -ffreestanding -c kernel/idt.c -o kernel/idt.o
+# CPU
+kernel/cpu/gdt.o: kernel/cpu/gdt.c
+	$(CC) $(CFLAGS) -c kernel/cpu/gdt.c -o kernel/cpu/gdt.o
 
-kernel/keyboard.o: kernel/keyboard.c
-	$(CC) -m32 -ffreestanding -c kernel/keyboard.c -o kernel/keyboard.o
+kernel/cpu/idt.o: kernel/cpu/idt.c
+	$(CC) $(CFLAGS) -c kernel/cpu/idt.c -o kernel/cpu/idt.o
 
-kernel/ports.o: kernel/ports.c
-	$(CC) -m32 -ffreestanding -c kernel/ports.c -o kernel/ports.o
+# Drivers
+kernel/drivers/ports.o: kernel/drivers/ports.c
+	$(CC) $(CFLAGS) -c kernel/drivers/ports.c -o kernel/drivers/ports.o
 
-kernel/timer.o: kernel/timer.c
-	$(CC) -m32 -ffreestanding -c kernel/timer.c -o kernel/timer.o
+kernel/drivers/keyboard.o: kernel/drivers/keyboard.c
+	$(CC) $(CFLAGS) -c kernel/drivers/keyboard.c -o kernel/drivers/keyboard.o
 
-# Link everything into a kernel ELF
-$(BUILD_DIR)/kernel.elf: boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o
+kernel/drivers/timer.o: kernel/drivers/timer.c
+	$(CC) $(CFLAGS) -c kernel/drivers/timer.c -o kernel/drivers/timer.o
+
+# Memory
+kernel/memory/pmm.o: kernel/memory/pmm.c
+	$(CC) $(CFLAGS) -c kernel/memory/pmm.c -o kernel/memory/pmm.o
+
+kernel/memory/paging.o: kernel/memory/paging.c
+	$(CC) $(CFLAGS) -c kernel/memory/paging.c -o kernel/memory/paging.o
+
+kernel/memory/heap.o: kernel/memory/heap.c
+	$(CC) $(CFLAGS) -c kernel/memory/heap.c -o kernel/memory/heap.o
+
+# Link
+OBJS = boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o boot/load_paging.o \
+       kernel/kernel.o kernel/display/vga.o kernel/cpu/gdt.o kernel/cpu/idt.o \
+       kernel/drivers/ports.o kernel/drivers/keyboard.o kernel/drivers/timer.o \
+       kernel/memory/pmm.o kernel/memory/paging.o kernel/memory/heap.o
+
+$(BUILD_DIR)/kernel.elf: $(OBJS)
 	mkdir -p $(BUILD_DIR)
-	$(LD) -T link.ld -melf_i386 boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o kernel/kernel.o kernel/vga.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o -o $(BUILD_DIR)/kernel.elf
+	$(LD) -T link.ld -melf_i386 $(OBJS) -o $(BUILD_DIR)/kernel.elf
 
 # Build the bootable ISO
 $(BUILD_DIR)/keti.iso: $(BUILD_DIR)/kernel.elf
@@ -52,14 +74,12 @@ $(BUILD_DIR)/keti.iso: $(BUILD_DIR)/kernel.elf
 	cp boot/grub.cfg $(BUILD_DIR)/isodir/boot/grub/grub.cfg
 	grub-mkrescue -o $(BUILD_DIR)/keti.iso $(BUILD_DIR)/isodir
 
-
-
 # Boot in QEMU
 run: $(BUILD_DIR)/keti.iso
 	qemu-system-i386 -cdrom $(BUILD_DIR)/keti.iso -boot d
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f boot/loader.o kernel/kernel.o kernel/vga.o boot/gdt_load.o boot/isr.o boot/idt_load.o kernel/gdt.o kernel/idt.o kernel/keyboard.o kernel/ports.o kernel/timer.o
+	rm -f $(OBJS)
 
 .PHONY: all run clean

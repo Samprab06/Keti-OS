@@ -1,6 +1,6 @@
 #include "keyboard.h"
-#include "vga.h"
-#include "idt.h"
+#include "display/vga.h"
+#include "cpu/idt.h"
 #include "ports.h"
 
 extern void keyboard_isr();

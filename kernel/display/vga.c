@@ -2,7 +2,7 @@
 Each character is 2 bytes - ASCII then color
 Screen is 80 columns × 25 rows
 Color 0x0F is white on black*/
-
+#include "vga.h"
 int cursor_row = 0;
 int cursor_col = 0;
 
@@ -50,6 +50,23 @@ void print_char_vga(char c){
         cursor_row++;
     }
 }
+
+void print_hex_vga(unsigned int n){
+    print_vga("0x");
+    for (int i = 28; i>=0; i-=4){
+        //keeps digit between 0 to 15
+        int digit = (n >> i) & 0xF;
+        char c;
+        if (digit<10){
+            c = '0' + digit;
+        }
+        else{
+            c = 'A' + (digit - 10);
+        }
+        print_char_vga(c);
+    }
+}
+
 
 void delete_char_vga(){
     if (cursor_col > 0) {
