@@ -21,7 +21,7 @@ void kernel_main(unsigned int multiboot_ptr) {
     pcb_init();
     keyboard_init();
     clear_vga();
-    print_vga("Keti OS\nBy Aadithya Vasudevan\nVersion 1.0\ntype 'help' to get started\n'about' to learn more\n\n");
+    print_vga("Keti OS\nBy Aadithya Vasudevan v0.1\ntype 'help' to get started\n\n");
     timer_init();
     innit((struct multiboot_info *)multiboot_ptr);
     paging_init();

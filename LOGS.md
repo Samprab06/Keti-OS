@@ -106,3 +106,23 @@ Finally phase 5 is also done. This means keti now has user mode and it has run c
 Looks like the chess, tetris and Calculator dream may not be so far off lmao. Well gg, and a very tiring session.
 
 Also for the AI, I had some nice ideas. Maybe instead of having a Search engine like chrome. Maybe the inbuilt AI is the search and it can filter content and provide stuff to you.
+
+Updated phase list:
+
+Phase 6:
+  - Scrollback (really Phase 5 polish)
+  - VFS layer
+  - Ramdisk/initrd  
+  - ELF loader
+  - Auth system
+  - Calculator (quick win)
+  - Tetris (first real game)
+  - Chess
+  - USB flash + send to friends
+Phase 7:
+  - Graphics mode (Mode 13h)
+  - Keti language
+  - AI/SLM engine
+Phase 8:
+  - Networking
+  - Full GUI
