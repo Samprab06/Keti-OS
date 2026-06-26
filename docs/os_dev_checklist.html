@@ -66,69 +66,69 @@
 <script>
 const phases = [
   {
-    id: "p1", label: "Phase 1 — prerequisites & toolchain", color: "#3C3489", bar: "#7F77DD",
+    id: "p1", label: "Phase 1 - prerequisites & toolchain", color: "#3C3489", bar: "#7F77DD",
     badge: { bg: "#EEEDFE", text: "#3C3489" },
     items: [
       { id: "i01", title: "x86 architecture basics", sub: "registers (EAX–EDI, ESP, EBP, EIP), flags, memory segmentation model", tags: ["theory"] },
       { id: "i02", title: "NASM / GAS assembly fundamentals", sub: "mov, push/pop, call/ret, int; understand real mode vs protected mode syntax", tags: ["asm"] },
-      { id: "i03", title: "Set up cross-compiler: GCC i686-elf toolchain", sub: "build or download a freestanding i686-elf-gcc — essential so you don't link libc", tags: ["c"] },
+      { id: "i03", title: "Set up cross-compiler: GCC i686-elf toolchain", sub: "build or download a freestanding i686-elf-gcc - essential so you don't link libc", tags: ["c"] },
       { id: "i04", title: "QEMU / Bochs emulator setup", sub: "test without rebooting a real machine; QEMU is faster, Bochs has better debugger", tags: ["theory"] },
       { id: "i05", title: "GDB remote debugging with QEMU", sub: "qemu -s -S flag + gdb target remote; you'll need this constantly", tags: ["c"] },
       { id: "i06", title: "Understand ELF binary format", sub: "sections (.text .data .bss), entry point, linker scripts (.ld files)", tags: ["theory"] },
     ]
   },
   {
-    id: "p2", label: "Phase 2 — booting", color: "#085041", bar: "#1D9E75",
+    id: "p2", label: "Phase 2 - booting", color: "#085041", bar: "#1D9E75",
     badge: { bg: "#E1F5EE", text: "#085041" },
     items: [
       { id: "i07", title: "How BIOS/UEFI boots: the boot sequence", sub: "POST → MBR → bootloader → kernel; understand what state CPU is in at power-on", tags: ["theory"] },
-      { id: "i08", title: "Write a minimal bootloader in assembly", sub: "fits in 512 bytes, prints 'Hello', BIOS int 10h — proves you control the machine", tags: ["asm"] },
-      { id: "i09", title: "Use GRUB as your bootloader (recommended shortcut)", sub: "GRUB implements Multiboot spec; you write a kernel, GRUB loads it — saves weeks", tags: ["c"] },
-      { id: "i10", title: "Multiboot header in your kernel", sub: "magic number 0x1BADB002, flags, checksum — GRUB handshake", tags: ["asm"] },
-      { id: "i11", title: "Enter protected mode (32-bit)", sub: "set GDT, flip CR0 bit, far jump — or just let GRUB do it for you", tags: ["asm"] },
+      { id: "i08", title: "Write a minimal bootloader in assembly", sub: "fits in 512 bytes, prints 'Hello', BIOS int 10h - proves you control the machine", tags: ["asm"] },
+      { id: "i09", title: "Use GRUB as your bootloader (recommended shortcut)", sub: "GRUB implements Multiboot spec; you write a kernel, GRUB loads it - saves weeks", tags: ["c"] },
+      { id: "i10", title: "Multiboot header in your kernel", sub: "magic number 0x1BADB002, flags, checksum - GRUB handshake", tags: ["asm"] },
+      { id: "i11", title: "Enter protected mode (32-bit)", sub: "set GDT, flip CR0 bit, far jump - or just let GRUB do it for you", tags: ["asm"] },
       { id: "i12", title: "Set up a basic linker script", sub: "place .text at 1MB+, align sections, define kernel entry symbol", tags: ["c"] },
     ]
   },
   {
-    id: "p3", label: "Phase 3 — kernel foundations", color: "#185FA5", bar: "#378ADD",
+    id: "p3", label: "Phase 3 - kernel foundations", color: "#185FA5", bar: "#378ADD",
     badge: { bg: "#E6F1FB", text: "#185FA5" },
     items: [
-      { id: "i13", title: "VGA text mode output", sub: "write to 0xB8000; implement kprintf — your first debug tool", tags: ["c"] },
+      { id: "i13", title: "VGA text mode output", sub: "write to 0xB8000; implement kprintf - your first debug tool", tags: ["c"] },
       { id: "i14", title: "GDT (Global Descriptor Table)", sub: "set up code, data, stack segment descriptors in C + assembly", tags: ["c", "asm"] },
       { id: "i15", title: "IDT (Interrupt Descriptor Table) + ISRs", sub: "wire CPU exceptions (div-by-zero, page fault) and IRQs to C handlers", tags: ["c", "asm"] },
       { id: "i16", title: "PIC remapping (8259 chip)", sub: "remap IRQ0–15 away from CPU exception vectors 0–31", tags: ["asm"] },
       { id: "i17", title: "Keyboard driver via IRQ1", sub: "read scancode from port 0x60, build a scancode→ASCII map", tags: ["c"] },
-      { id: "i18", title: "PIT timer (IRQ0) — system tick", sub: "program 8253/8254 for ~100Hz; implement uptime counter and sleep()", tags: ["c"] },
+      { id: "i18", title: "PIT timer (IRQ0) - system tick", sub: "program 8253/8254 for ~100Hz; implement uptime counter and sleep()", tags: ["c"] },
     ]
   },
   {
-    id: "p4", label: "Phase 4 — memory management", color: "#993C1D", bar: "#D85A30",
+    id: "p4", label: "Phase 4 - memory management", color: "#993C1D", bar: "#D85A30",
     badge: { bg: "#FAECE7", text: "#993C1D" },
     items: [
       { id: "i19", title: "Physical memory manager (PMM)", sub: "bitmap allocator over the Multiboot memory map; alloc_frame() / free_frame()", tags: ["c"] },
-      { id: "i20", title: "Paging — enabling virtual memory", sub: "page directory, page tables, CR3 register, identity map first 4MB", tags: ["c", "asm"] },
-      { id: "i21", title: "Kernel heap allocator", sub: "simple kmalloc/kfree over a fixed slab or buddy allocator — don't port libc yet", tags: ["c", "theory"] },
-      { id: "i22", title: "Understand page faults", sub: "ISR 14 handler — distinguish kernel bugs from user access violations", tags: ["theory"] },
+      { id: "i20", title: "Paging - enabling virtual memory", sub: "page directory, page tables, CR3 register, identity map first 4MB", tags: ["c", "asm"] },
+      { id: "i21", title: "Kernel heap allocator", sub: "simple kmalloc/kfree over a fixed slab or buddy allocator - don't port libc yet", tags: ["c", "theory"] },
+      { id: "i22", title: "Understand page faults", sub: "ISR 14 handler - distinguish kernel bugs from user access violations", tags: ["theory"] },
     ]
   },
   {
-    id: "p5", label: "Phase 5 — processes & shell", color: "#3B6D11", bar: "#639922",
+    id: "p5", label: "Phase 5 - processes & shell", color: "#3B6D11", bar: "#639922",
     badge: { bg: "#EAF3DE", text: "#3B6D11" },
     items: [
       { id: "i23", title: "Task / process structure", sub: "PCB (process control block): registers, stack pointer, page directory, state", tags: ["c", "theory"] },
       { id: "i24", title: "Context switching", sub: "save/restore registers on timer IRQ; round-robin scheduler to start", tags: ["c", "asm"] },
       { id: "i25", title: "System call interface", sub: "int 0x80 dispatch table; implement write(), read(), exit() first", tags: ["c", "asm"] },
-      { id: "i26", title: "User mode (ring 3)", sub: "set up user-mode segments, TSS, iret to ring 3 — security boundary", tags: ["asm", "theory"] },
+      { id: "i26", title: "User mode (ring 3)", sub: "set up user-mode segments, TSS, iret to ring 3 - security boundary", tags: ["asm", "theory"] },
       { id: "i27", title: "Simple shell in userspace", sub: "reads keystrokes via syscall, tokenises input, forks+execs commands", tags: ["c"] },
     ]
   },
   {
-    id: "p6", label: "Phase 6 — filesystem (for chess binary)", color: "#854F0B", bar: "#BA7517",
+    id: "p6", label: "Phase 6 - filesystem (for chess binary)", color: "#854F0B", bar: "#BA7517",
     badge: { bg: "#FAEEDA", text: "#854F0B" },
     items: [
-      { id: "i28", title: "Virtual filesystem (VFS) layer", sub: "abstract inode interface; open/read/write/close ops — lets you swap backends", tags: ["c", "theory"] },
-      { id: "i29", title: "initrd / ramdisk", sub: "embed a tar archive in the kernel image; mount it as root — no disk driver needed yet", tags: ["c"] },
-      { id: "i30", title: "Load and execute ELF binaries", sub: "parse ELF header, map segments, jump to entry — this lets you run chess as a process", tags: ["c"] },
+      { id: "i28", title: "Virtual filesystem (VFS) layer", sub: "abstract inode interface; open/read/write/close ops - lets you swap backends", tags: ["c", "theory"] },
+      { id: "i29", title: "initrd / ramdisk", sub: "embed a tar archive in the kernel image; mount it as root - no disk driver needed yet", tags: ["c"] },
+      { id: "i30", title: "Load and execute ELF binaries", sub: "parse ELF header, map segments, jump to entry - this lets you run chess as a process", tags: ["c"] },
     ]
   },
 ];

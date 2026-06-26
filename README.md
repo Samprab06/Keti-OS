@@ -2,7 +2,8 @@
 
 A 32-bit x86 operating system built from the ground up in C and assembly. Interactive shell, real-time clock, preemptive multitasking, and user mode - built to eventually run its own language, games, and a local AI model.
 
----
+![Keti OS running in QEMU](docs/keti-main.png)
+
 
 ## What it does right now
 
@@ -95,9 +96,9 @@ kernel/
   process/      PCB, round-robin scheduler, syscall interface
   shell/        interactive shell, command dispatch, history
   lib/          string utilities
+docs/           screenshots, the OS dev checklist, and contributor logs
 link.ld         linker script
 Makefile        build and run
-LOGS.md         development journal - how it was built, phase by phase
 ```
 
 ---
@@ -127,6 +128,10 @@ You do **not** need to write any assembly to contribute. The assembly layer (int
 
 The shell (`kernel/shell/shell.c`) and the display driver (`kernel/display/vga.c`) are the best starting points for most contributors.
 
+### Logging your contributions
+
+Contributors are encouraged to add their logs to the `docs/` folder so others can understand what was built and how. Create a subfolder for what you worked on and add your notes there - for example, `docs/chess/` for a chess implementation, `docs/filesystem/` for filesystem work. Write whatever format works for you: dated entries, design notes, debugging stories. The goal is that someone reading it later can follow the thinking, not just the code.
+
 Open an issue or a pull request. Things will change, break, and improve - that's the point.
 
 ---
@@ -144,4 +149,4 @@ Open an issue or a pull request. Things will change, break, and improve - that's
 
 ---
 
-One thing I want to highlight is, I will continuously add more stuff and this is my README, so I'll probably move this down as I add ways to personalize this for others, and how to do what I did. btw, if you are reading this and are feeling lost, dont worry. I was in your shoes (if you are size 13 UK) in June 14th 2026 (the day I started), and I asked Claude (cuz our brains are shrinking lol) for some resources to learn and it made an insanely good looking html page that you can run and use all the resources I used. I also asked for a checklist and this has the checklist html as well. Shoutout to NanoByte, and many others. You guys are the GOATs!
+One thing I want to highlight is, I will continuously add more stuff and this is my README, so I'll probably move this down as I add ways to personalize this for others, and how to do what I did. btw, if you are reading this and are feeling lost, dont worry. I was in your shoes (if you are size 13 UK) in June 14th 2026 (the day I started), and I asked Claude (cuz our brains are shrinking lol) for some resources to learn and it made an insanely good looking html page that you can run and use all the resources I used. I also asked for a checklist and this has the checklist html as well. Shoutout to NanoByte, Little OS Book, Claude(i know) and others. You guys are the GOATs!
