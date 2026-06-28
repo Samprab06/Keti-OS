@@ -101,8 +101,8 @@ void cmd_help(char *args) {
 
 void cmd_timezone(char *args) {
     if (kstrcmp(args, "UTC") == 0)  tz_offset_minutes = 0;
-    else if (kstrcmp(args, "IST") == 0)  tz_offset_minutes = 5 * 60 + 30;
-    else if (kstrcmp(args, "EST") == 0)  tz_offset_minutes = -5 * 60;
+    else if (kstrcmp(args, "IST") == 0) tz_offset_minutes = 5 * 60 + 30;
+    else if (kstrcmp(args, "EST") == 0)   tz_offset_minutes = -5 * 60;
     else if (kstrcmp(args, "PST") == 0)  tz_offset_minutes = -8 * 60;
     else if (kstrcmp(args, "CST") == 0)  tz_offset_minutes = -6 * 60;
     else if (kstrcmp(args, "SST") == 0)  tz_offset_minutes = -11 * 60;

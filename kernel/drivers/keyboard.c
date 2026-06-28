@@ -7,6 +7,7 @@
 extern void keyboard_isr();
 static int shift_pressed = 0;
 static int arrow = 0;
+static int caps_lock = 0;
 
 static char scancode_table[128] = {
     0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -30,6 +31,12 @@ void keyboard_handler(){
     //both arrows register 0xE0 first
     if (scancode == 0xE0) {
         arrow = 1;
+        outb(0x20, 0x20);
+        return;
+    }
+    // Caps Lock (PS/2 set 1): make = 0x3A (break = 0xBA)
+    if (scancode == 0x3A) {
+        caps_lock = !caps_lock;
         outb(0x20, 0x20);
         return;
     }
@@ -66,7 +73,16 @@ void keyboard_handler(){
     }
     //printable ASCII
     else if (scancode < 128) {
-        char c = shift_pressed ? scancode_shift[scancode] : scancode_table[scancode];
+        char base = scancode_table[scancode];
+        char shifted = scancode_shift[scancode];
+        char c = 0;
+        // letters will be affected by Caps Lock XOR them to get new letter 
+        if (base >= 'a' && base <= 'z') {
+            c = (shift_pressed ^ caps_lock) ? shifted : base;
+        } else {
+            //no effect of caps lock here 
+            c = shift_pressed ? shifted : base;
+        }
         if (c != 0) {
             shell_handle_input(c);
         }
