@@ -6,7 +6,7 @@
 #include "process/scheduler.h"
 
 extern void timer_isr();
-
+char clock_str[16] = "        ";
 unsigned int tick = 0;
 
 int tz_offset_minutes = 0;   // start at UTC
@@ -49,19 +49,25 @@ void timer_handler(){
             if (display_hours == 0) display_hours = 12;
         }
         //display buffer
-        char buf[16];
-        buf[0] = '0' + (display_hours / 10);
-        buf[1] = '0' + (display_hours % 10);
-        buf[2] = ':';
-        buf[3] = '0' + (minutes / 10);
-        buf[4] = '0' + (minutes % 10);
-        buf[5] = ':';
-        buf[6] = '0' + (s / 10);
-        buf[7] = '0' + (s % 10);
-        buf[8] = '\0';
-        
-        write_pos(0, 65, "            "); //makes it clear the characters
-        write_pos(0, 65, buf);
+        clock_str[0] = '0' + (display_hours / 10);
+        clock_str[1] = '0' + (display_hours % 10);
+        clock_str[2] = ':';
+        clock_str[3] = '0' + (minutes / 10);
+        clock_str[4] = '0' + (minutes % 10);
+        clock_str[5] = ':';
+        clock_str[6] = '0' + (s / 10);
+        clock_str[7] = '0' + (s % 10);
+
+        if (use_12_hour) {
+            clock_str[8] = ' ';
+            clock_str[9] = (hours_24 >= 12) ? 'P' : 'A';
+            clock_str[10] = 'M';
+            clock_str[11] = '\0';
+        } else {
+            clock_str[8] = '\0';
+        }
+        // clock_str[9] = '\0';
+        write_pos(0, 65, clock_str);
         if (use_12_hour) {
             write_pos(0, 73, suffix);
         }

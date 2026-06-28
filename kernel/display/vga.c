@@ -24,7 +24,7 @@ int cursor_row = 0; //absolute row in screen_buf where cursor is
 int cursor_col = 0; //column where cursor is
 int view_top = 0; //which buffer row is shown at top of the screen
 int viewing_live = 1; //1 = following live output, 0 = scrolled back
-
+extern char clock_str[];
 void render();
 
 //Updates the hardware blinking cursor position via VGA controller ports
@@ -65,6 +65,7 @@ void render() {
             }
         }
     }
+    write_pos(0, 65, clock_str);
 }
 
 //when the cursor moves past the bottom of history, shift everything up

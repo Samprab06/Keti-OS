@@ -53,6 +53,9 @@ kernel/drivers/keyboard.o: kernel/drivers/keyboard.c
 kernel/drivers/timer.o: kernel/drivers/timer.c
 	$(CC) $(CFLAGS) -c kernel/drivers/timer.c -o kernel/drivers/timer.o
 
+kernel/drivers/mouse.o: kernel/drivers/mouse.c
+	$(CC) $(CFLAGS) -c kernel/drivers/mouse.c -o kernel/drivers/mouse.o
+
 # Memory
 kernel/memory/pmm.o: kernel/memory/pmm.c
 	$(CC) $(CFLAGS) -c kernel/memory/pmm.c -o kernel/memory/pmm.o
@@ -85,7 +88,7 @@ kernel/process/syscall.o: kernel/process/syscall.c
 # Link
 OBJS = boot/loader.o boot/gdt_load.o boot/idt_load.o boot/isr.o boot/load_paging.o boot/context_switch.o boot/user_mode.o\
        kernel/kernel.o kernel/display/vga.o kernel/cpu/gdt.o kernel/cpu/idt.o \
-       kernel/drivers/ports.o kernel/drivers/keyboard.o kernel/drivers/timer.o \
+       kernel/drivers/ports.o kernel/drivers/keyboard.o kernel/drivers/timer.o kernel/drivers/mouse.o\
        kernel/memory/pmm.o kernel/memory/paging.o kernel/memory/heap.o \
 	   kernel/shell/shell.o kernel/lib/string.o kernel/process/pcb.o kernel/process/scheduler.o kernel/process/syscall.o
 

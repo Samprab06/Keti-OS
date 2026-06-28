@@ -12,6 +12,9 @@ extern page_fault_handler
 global syscall_isr
 extern syscall_handler
 
+global mouse_isr
+extern mouse_handler
+
 section .text
 
 keyboard_isr:
@@ -19,6 +22,12 @@ keyboard_isr:
     call keyboard_handler
     popa
     iret 
+
+mouse_isr:
+    pusha
+    call mouse_handler
+    popa
+    iret
 
 fault_handle:
     pusha
