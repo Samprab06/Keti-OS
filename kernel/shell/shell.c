@@ -1,6 +1,7 @@
 #include "shell.h"
 #include "display/vga.h"
 #include "lib/string.h"
+#include "wordle.h"
 
 int input_pos = 0;
 char input_buffer[INPUT_SIZE];
@@ -22,6 +23,8 @@ struct command commands[] = {
     {"timezone", cmd_timezone, "Timezone command (eg. timezone EST)"},
     {"clock", cmd_clock, "Set clock format (12 or 24 hour), (eg. clock 12)"},
     {"dst", cmd_dst, "Set daylight savings time (dst on/off)"},
+    {"wordle", cmd_wordle, "Start Wordle "},
+    {"testing", testing, "Testing command"},
     {0, 0, 0}    // sentinel marking the end
 };
 void shell_handle_input(char c){
@@ -163,6 +166,12 @@ void cmd_about(char *args) {
 }
     
 void cmd_echo(char *args) {
+    print_vga(args);
+    print_char_vga('\n');
+}
+
+void testing (char *args) {
+    print_vga("Testing command executed with args: ");
     print_vga(args);
     print_char_vga('\n');
 }

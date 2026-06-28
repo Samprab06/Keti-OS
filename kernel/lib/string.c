@@ -29,3 +29,12 @@ void int_to_str(int n, char *buf) {
     }
     buf[j] = '\0';
 }
+
+// string length function 
+int kstrlen (const char *str){
+    int len = 0;
+    while (str[len] != '\0') {
+        len++;
+    }
+    return len;
+}

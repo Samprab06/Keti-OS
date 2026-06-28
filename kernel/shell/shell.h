@@ -28,6 +28,8 @@ void cmd_echo(char *args);
 void cmd_timezone(char *args);
 void cmd_clock(char *args);
 void cmd_dst(char *args);
+void cmd_wordle(char *args);
+void testing (char *args);
 
 void shell_down();
 void shell_up();
